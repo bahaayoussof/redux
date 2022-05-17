@@ -1,4 +1,5 @@
-import { createAction, createReducer, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 
 // Reducer
 let lastId = 0;
@@ -8,6 +9,12 @@ const slice = createSlice({
 	initialState: [],
 	reducers: {
 		// actions : action handlers
+		bugAssignedToUser: (bugs, action) => {
+			const { bugId, userId } = action.payload;
+			const index = bugs.findIndex(bug => bug.id === bugId);
+			bugs[index].userId = userId;
+		},
+
 		bugAdded: (bugs, action) => {
 			bugs.push({
 				id: ++lastId,
@@ -30,10 +37,21 @@ const slice = createSlice({
 	},
 });
 
-export const { bugAdded, bugResolved, bugRemoved } = slice.actions;
+export const { bugAdded, bugResolved, bugRemoved, bugAssignedToUser } = slice.actions;
 export default slice.reducer;
 
 // Selectors
 
-export const getUnresolvedCount = state =>
-  state.entities.bugs.filter(bug => !bug.resolved);
+// Memoization
+// bugs => get unresolved bugs from the cache.
+
+export const getUnresolvedBugs = createSelector(
+	state => state.entities.bugs, // selector
+	bugs => bugs.filter(bug => !bug.resolved) // result
+);
+
+export const getBugByUser = userId =>
+	createSelector(
+		state => state.entities.bugs,
+		bugs => bugs.filter(bug => bug.userId === userId)
+	);
