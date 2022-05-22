@@ -15,8 +15,17 @@ const slice = createSlice({
 	reducers: {
 		// actions : action handlers
 
+		bugsRequested: (bugs, action) => {
+			bugs.loading = true;
+		},
+
+		bugsRequestedFailed: (bugs, action) => {
+			bugs.loading = false;
+		},
+
 		bugsReceived: (bugs, action) => {
 			bugs.list = action.payload;
+			bugs.loading = false;
 		},
 
 		bugAssignedToUser: (bugs, action) => {
@@ -47,8 +56,15 @@ const slice = createSlice({
 	},
 });
 
-export const { bugAdded, bugResolved, bugRemoved, bugAssignedToUser, bugsReceived } =
-	slice.actions;
+export const {
+	bugAdded,
+	bugResolved,
+	bugRemoved,
+	bugAssignedToUser,
+	bugsReceived,
+	bugsRequested,
+	bugsRequestedFailed,
+} = slice.actions;
 export default slice.reducer;
 
 // ActionCreators
@@ -56,7 +72,9 @@ const url = "/bugs";
 export const loadBugs = () =>
 	apiCallBegan({
 		url,
+		onStart: bugsRequested.type,
 		onSuccess: bugsReceived.type,
+		onError: bugsRequestedFailed.type,
 	});
 
 // Selectors
