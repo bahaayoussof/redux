@@ -7,6 +7,7 @@ import {
 	bugAssignedToUser,
 	getBugByUser,
 	loadBugs,
+	addBug,
 } from "./store/bugs";
 import { projectAdded } from "./store/projects";
 import { userAdded, assignBug } from "./store/users";
@@ -30,6 +31,5 @@ const store = configureStore();
 // 		onSuccess: "bugsReceived",
 // 	})
 // );
-
-store.dispatch(loadBugs());
-setTimeout(() => store.dispatch(loadBugs()), 2000);
+// store.dispatch(loadBugs());
+store.dispatch(addBug({ description: "Bug 0" }));
