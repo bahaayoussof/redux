@@ -1,16 +1,5 @@
 import configureStore from "./store/configureStore";
-import {
-	bugAdded,
-	bugRemoved,
-	bugResolved,
-	getUnresolvedBugs,
-	bugAssignedToUser,
-	getBugByUser,
-	loadBugs,
-	addBug,
-	resolveBug,
-	assignBugToUser,
-} from "./store/bugs";
+import { loadBugs, addBug, resolveBug, assignBugToUser } from "./store/bugs";
 import { projectAdded } from "./store/projects";
 
 const store = configureStore();
