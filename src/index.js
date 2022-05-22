@@ -6,10 +6,10 @@ import {
 	getUnresolvedBugs,
 	bugAssignedToUser,
 	getBugByUser,
+	loadBugs,
 } from "./store/bugs";
 import { projectAdded } from "./store/projects";
 import { userAdded, assignBug } from "./store/users";
-import * as actions from "./store/api";
 
 const store = configureStore();
 
@@ -24,9 +24,11 @@ const store = configureStore();
 // });
 
 // api with actionCreators
-store.dispatch(
-	actions.apiCallBegan({
-		url: "/bugs",
-		onSuccess: "bugsReceived",
-	})
-);
+// store.dispatch(
+// 	actions.apiCallBegan({
+// 		url: "/bugs",
+// 		onSuccess: "bugsReceived",
+// 	})
+// );
+
+store.dispatch(loadBugs());
